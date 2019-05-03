@@ -12,6 +12,12 @@ class SessionsController extends Controller
         return view('session.create');
     }
 
+    /**
+     * 用户登录
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Validation\ValidationException
+     */
     public function store(Request $request)
     {
         $userdetail = $this->validate($request, [
@@ -28,6 +34,10 @@ class SessionsController extends Controller
         }
     }
 
+    /**
+     * 用户登出
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function destroy()
     {
         Auth::logout();

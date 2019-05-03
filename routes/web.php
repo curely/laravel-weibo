@@ -15,13 +15,26 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+/**
+ * 主页
+ */
 Route::get('/', 'StaticPagesController@home')->name('home');
 Route::get('/help', 'StaticPagesController@help')->name('help');
 Route::get('/about', 'StaticPagesController@about')->name('about');
 
+/**
+ * 注册
+ */
 Route::get('signup', 'UsersController@create')->name('signup');
-Route::resource('users', 'UsersController');
 
+/**
+ * 登录、登出
+ */
 Route::get('login', 'SessionsController@create')->name('login');
 Route::post('login', 'SessionsController@store')->name('login');
 Route::delete('logout', 'SessionsController@destroy')->name('logout');
+
+/**
+ * 用户
+ */
+Route::resource('users', 'UsersController');

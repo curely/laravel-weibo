@@ -13,11 +13,22 @@ class UsersController extends Controller
         return view('users.create');
     }
 
+    /**
+     * 用户展示
+     * @param User $user
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function show(User $user)
     {
         return view('users.show', compact('user'));
     }
 
+    /**
+     * 注册用户
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Validation\ValidationException
+     */
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -37,4 +48,35 @@ class UsersController extends Controller
 
         return redirect()->route('users.show', [$user]);
     }
+
+    /**
+     * 用户编辑页面
+     * @param User $user
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function edit(User $user)
+    {
+        return view('users.edit', compact('user'));
+    }
+
+    public function update(User $user, Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|max:50',
+            'password' => 'nullable|confirmed:min:6'
+        ]);
+
+        $data = [];
+        $data['name'] = $request->name;
+        if ($request->password) {
+            $data['password'] = bcrypt($request->password);
+        }
+
+        $user->update($data);
+
+        session()->flash('success', '个人资料更新成功');
+
+        return redirect()->route('users.show', $user->id);
+    }
+
 }
